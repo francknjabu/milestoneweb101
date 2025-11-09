@@ -45,6 +45,7 @@ When To Modify:
     <li><a href="#For the people who want a healthy and more fit lifestyle">Fitness</a></li>
     <li><a href="#Links">resources</a></li>
     <li><a href="#Get Fit Now">website</a></li>
+    <li><button id="theme-button">Toggel Dark Mode</button></li>
     </ul>
 </div>
          
@@ -119,7 +120,48 @@ When To Modify:
         <p>Very impornt to finsh your nurtition plate. Known for maintaing hunger and satifaction during your procces.</p>
         <img alt="Image description" src="./img/placeholder7.png"/>
 
-        <!-- rsvp [PLACEHOLDER] [ADDED IN UNIT 6] -->
+        <!-- rsvp
+
+Purpose:
+- Section for users to sign up for the event
+- Contains a form for users to input their information, 
+and a list of other users who have signed up
+
+When To Modify:
+- [ ] Project 6 (REQUIRED FEATURE) 
+- [ ] Project 6 (STRETCH FEATURE) 
+- [ ] Any time after
+--> 
+<div id="rsvp">
+    <h2>RSVP</h2>
+    <div class="rsvp-container">
+        <div class="rsvp-para">
+        <p>Register for our newsletter to get the latest updates on fitness and health tips! We'll send you weekly articles, workout routines, and healthy recipes to help you stay on track with your fitness goals. Don't miss out on the opportunity to improve your health and wellness with our expert advice. Sign up now and take the first step towards a healthier you!</p>
+            <!-- info goes here -->
+        </div>
+        <div id="rsvp-participants">
+            <p>🎟️ Jake from Georgia has RSVP'd.</p>
+            <p>🎟️ Justin from New York has RSVP'd.</p>
+            <p>🎟️ Teresa Maryland has RSVP'd.</p>
+        </div>
+    </div>
+
+    <!--- Sign RSVP Form --->
+    <div class="form-container">
+        <form id="rsvp-form" title="rsvp-form">
+        <label for="Name">Name</label>
+      <input id ="Name" type="text">
+        <label for="Email">Email</label>
+      <input id="Email" type="text"> 
+         <label for="State">State</label>
+     <input id="State" type="text"> 
+            <!-- form inputs go here -->
+        <!-- Submit button -->
+        <button id="rsvp-button" type="submit">Submit RSVP</button>
+        </form>
+    </div>      
+</div>
+
         <!-- success modal [PLACEHOLDER] [ADDED IN UNIT 9] --> 
 
         <!-- links
@@ -152,6 +194,6 @@ When To Modify:
             
         <!-- footer [PLACEHOLDER] [ADDED IN UNIT 3] -->
         <!-- script [PLACEHOLDER] [ADDED IN UNIT 5] -->
-
+<script src="index.js"></script>
     </body>
 </html>
