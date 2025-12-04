@@ -39,76 +39,57 @@ themeButton.addEventListener("click", toggleDarkMode);
 
 // Step 1: Add your query for the submit RSVP button here
 
-const addParticipant = (event) => {
-    // Step 2: Write your code to manipulate the DOM here
-const rsvpList = document.getElementById("rsvp-participants");
-  const nameInput = document.getElementById("Name").value;
-  const emailInput = document.getElementById("Email").value;
-  const stateInput = document.getElementById("State").value;
+// STEP 1 — Original addParticipant function (now refactored)
+const addParticipant = (event, person) => {
+  const rsvpList = document.getElementById("rsvp-participants");
+
   const listItem = document.createElement("p");
-  listItem.textContent = `${nameInput} from ${stateInput}has RSVP'd.`;
+  listItem.textContent = `${person.name} from ${person.hometown} has RSVP'd.`;
+
   rsvpList.appendChild(listItem);
-    
-}
+};
+
+
+// STEP 2 — RSVP button reference
 const rsvpButton = document.getElementById("rsvp-button");
 
 
-
-// Step 3: Add a click event listener to the submit RSVP button here
-/*** Form Validation ***
-  
-  Purpose:
-  - Prevents invalid form submissions from being added to the list of participants.
-
-  When To Modify:
-  - [ ] Project 7 (REQUIRED FEATURE)
-  - [ ] Project 7 (STRETCH FEATURE)
-  - [ ] Project 9 (REQUIRED FEATURE)
-  - [ ] Any time between / after
-***/
-
-/*** Form Validation ***
-  
-  Purpose:
-  - Prevents invalid form submissions from being added to the list of participants.
-
-  When To Modify:
-  - [ ] Project 7 (REQUIRED FEATURE)
-  - [ ] Project 7 (STRETCH FEATURE)
-  - [ ] Project 9 (REQUIRED FEATURE)
-  - [ ] Any time between / after
-***/
-
-// Step 1: We actually don't need to select the form button again -- we already did it in the RSVP code above.
-
-// Step 2: Write the callback function
+// STEP 3 — Form validation function
 const validateForm = () => {
 
   let containsErrors = false;
 
   var rsvpInputs = document.getElementById("rsvp-form").elements;
 
-  // TODO: Loop through all inputs
+  // Create the person object
+  let person = {
+    name: rsvpInputs["Name"].value.trim(),
+    hometown: rsvpInputs["State"].value.trim(),
+    email: rsvpInputs["Email"].value.trim()
+  };
+
+  // Validation loop
   for (let i = 0; i < rsvpInputs.length; i++) {
     let input = rsvpInputs[i];
 
-    // Skip the submit button
     if (input.type === "submit") continue;
 
-    // TODO: Inside loop, validate the value of each input
     if (input.value.trim().length < 2) {
       containsErrors = true;
-      input.classList.add("error");  // highlight invalid field
+      input.classList.add("error");
     } else {
-      input.classList.remove("error"); // remove error if valid
+      input.classList.remove("error");
     }
   }
 
-  // TODO: If no errors, call addParticipant() and clear fields
-  if (containsErrors === false) {
-    addParticipant();
+  // If valid → add participant
+  if (!containsErrors) {
 
-    // Clear all input fields
+    // Pass the person object
+    addParticipant(null, person);
+    toggleModal(person);
+
+    // Clear fields
     for (let i = 0; i < rsvpInputs.length; i++) {
       let input = rsvpInputs[i];
       if (input.type !== "submit") {
@@ -116,16 +97,126 @@ const validateForm = () => {
       }
     }
   }
-}
+};
 
-// Step 3: Replace the form button's event listener with a new one that calls validateForm()
-// Step 3: Replace the form button's event listener with a new one that calls validateForm()
+
+// STEP 4 — Replace button listener to use validateForm
 rsvpButton.addEventListener("click", function(event) {
-  event.preventDefault(); // prevents the page from refreshing
-  validateForm();         // call your validation function
+  event.preventDefault(); 
+  validateForm();
 });
 
 
 
-/*** Animations [PLACEHOLDER] [ADDED IN UNIT 8] ***/
-/*** Success Modal [PLACEHOLDER] [ADDED IN UNIT 9] ***/
+
+
+
+
+/*** Scroll Animations ***
+  
+  Purpose:
+  - Use this starter code to add scroll animations to your website.
+
+  When To Modify:
+  - [ ] Project 8 (REQUIRED FEATURE)
+  - [ ] Any time after
+***/
+
+// Step 1: Select all elements with the class 'revealable'.
+let revealableContainers = document.querySelectorAll('.revealable');
+
+// Step 2: Write function to reveal elements when they are in view.
+const reveal = () => {
+    for (let i = 0; i < revealableContainers.length; i++) {
+        let current = revealableContainers[i];
+
+        // Get current height of container and window
+        let windowHeight = window.innerHeight;
+        let topOfRevealableContainer = revealableContainers[i].getBoundingClientRect().top;
+        let revealDistance = parseInt(getComputedStyle(current).getPropertyValue('--reveal-distance'), 10);
+
+        // If the container is within range, add the 'active' class to reveal
+        if (topOfRevealableContainer < windowHeight - revealDistance) {current.classList.add('active');
+        }
+        // If the container is not within range, hide it by removing the 'active' class
+        else { current.classList.remove('active');
+        }
+    }
+}
+
+// Step 3: Whenever the user scrolls, check if any containers should be revealed
+window.addEventListener('scroll', reveal);
+const reduceMotionButton = document.getElementById("reducedMotion");
+
+const reduceMotionFunction = () => {
+    document.body.classList.toggle("reduce-motion");
+      if (document.body.classList.contains("reduce-motion")) {
+        reduceMotionButton.textContent = "Reduced Motion: ON";
+    } else {
+        reduceMotionButton.textContent = "Reduced Motion: OFF";
+    }
+}
+
+reduceMotionButton.addEventListener("click", reduceMotionFunction);
+
+
+
+/*** Modal ***
+  
+  Purpose:
+  - Use this starter code to add a pop-up modal to your website.
+
+  When To Modify:
+  - [ ] Project 9 (REQUIRED FEATURE)
+  - [ ] Project 9 (STRETCH FEATURE)
+  - [ ] Any time after
+***/
+
+const toggleModal = (person) => {
+    let modal = document.getElementById("success-modal");
+
+    let modalContent = document.getElementById("modal-text");
+
+    // Show the modal
+    modal.style.display = "flex";
+
+    // Personalized text
+    modalContent.textContent = `Thanks for RSVPing, ${person.name}! We can't wait to see you at the event!`;
+
+    // ⭐ Step 5-B: Start animation
+    let intervalId = setInterval(animateImage, 500);  
+    // animateImage() runs every 500ms (0.5 seconds)
+
+    // Hide modal after 5 seconds
+    setTimeout(() => {
+        modal.style.display = "none";
+
+        // ⭐ Stop animation when modal closes
+        clearInterval(intervalId);
+
+        // Reset image rotation so it does NOT stay tilted
+        modalImage.style.transform = "rotate(0deg)";
+        rotateFactor = 0;
+
+    }, 5000);
+};
+
+// TODO: animation variables and animateImage() function
+
+// Step 5-A: Animation variables
+let rotateFactor = 0;  
+let modalImage = document.getElementById("modal-image");
+
+// Step 5-A: Create the animateImage function
+const animateImage = () => {
+
+    // Toggle between 0° and -10° rotation
+    if (rotateFactor === 0) {
+        rotateFactor = -10;
+    } else {
+        rotateFactor = 0;
+    }
+
+    // Apply rotation to image
+    modalImage.style.transform = `rotate(${rotateFactor}deg)`;
+};
